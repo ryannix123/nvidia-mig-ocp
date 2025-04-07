@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vllm-inference
+  labels:
+    app: vllm
+spec:
+  containers:
+    - name: vllm
+      image: ghcr.io/neuralmagic/vllm:latest
+      resources:
+        limits:
+          nvidia.com/gpu: 1
+      env:
+        - name: MODEL_PATH
+          value: /models/mistral-7b
+      volumeMounts:
+        - name: model-volume
+          mountPath: /models
+  volumes:
+    - name: model-volume
+      persistentVolumeClaim:
+        claimName: model-pvc
+  nodeSelector:
+    nvidia.com/gpu.present: "true"
+  tolerations:
+    - key: "nvidia.com/gpu"
+      operator: "Exists"
+      effect: "NoSchedule"

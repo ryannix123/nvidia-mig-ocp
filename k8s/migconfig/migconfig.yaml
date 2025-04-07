@@ -1,0 +1,15 @@
+apiVersion: migmanager.nvidia.com/v1
+kind: MIGConfig
+metadata:
+  name: h100-mig-config
+spec:
+  shared: true
+  config:
+    - name: all-1g
+      devices:
+        - deviceSelector:
+            matchLabels:
+              nvidia.com/gpu.product: "NVIDIA-H100-SXM5-80GB"
+          migDevices:
+            - profile: "1g.10gb"
+              count: 7

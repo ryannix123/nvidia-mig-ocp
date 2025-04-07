@@ -1,0 +1,9 @@
+---
+- name: Enable MIG mode on all GPUs
+  command: nvidia-smi -mig 1
+
+- name: Configure MIG profile on each GPU
+  command: nvidia-smi mig -cgi 19,19,19,19,19,19,19 -C
+
+- name: Verify MIG configuration
+  command: nvidia-smi -L
